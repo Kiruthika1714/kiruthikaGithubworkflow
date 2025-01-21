@@ -1,0 +1,91 @@
+name: Frontend Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual trigger of the pipeline
+
+jobs:
+  # Lint Job
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Set the required Node.js version
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci  # Use npm ci for clean installs in CI environments
+
+      - name: Run linting
+        run: npm run lint  # Run the linting command
+
+  # Test Job
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Set the required Node.js version
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci  # Use npm ci for clean installs in CI environments
+
+      - name: Run tests
+        run: npm run test  # Run the test command
+
+  # Build Job (only runs after Lint and Test jobs succeed)
+  build:
+    needs: [lint, test]  # This job depends on both lint and test jobs to succeed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Set the required Node.js version
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci  # Use npm ci for clean installs in CI environments
+
+      - name: Run tests (again for build validation)
+        run: npm run test  # Run the test command
+
+      - name: Build the application using Docker
+        run: |
+          docker build -t frontend-app .  # Replace with your actual build command
