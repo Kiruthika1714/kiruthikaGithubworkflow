@@ -87,7 +87,7 @@ jobs:
         run: |
           docker build \
             --build-arg REACT_APP_MOVIE_API_URL=${{ secrets.REACT_APP_MOVIE_API_URL }} \
-            -t frontend:$GITHUB_SHA .
+            -t frontend:latest .
 
       - name: Log into Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
