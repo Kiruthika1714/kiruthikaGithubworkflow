@@ -85,9 +85,7 @@ jobs:
 
       - name: Build the application with Docker
         run: |
-          docker build \
-            --build-arg REACT_APP_MOVIE_API_URL=${{ secrets.REACT_APP_MOVIE_API_URL }} \
-            -t frontend:latest .
+          docker build -t frontend .
 
       - name: Log into Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
