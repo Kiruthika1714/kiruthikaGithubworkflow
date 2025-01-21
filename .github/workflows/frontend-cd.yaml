@@ -104,6 +104,6 @@ jobs:
       - name: Deploy to EKS using kubectl
         run: |
           aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.AWS_EKS_CLUSTER_NAME }}
-          kubectl apply -f kubernetes/deployment.yaml  # Adjust path to your Kubernetes deployment file
+          kubectl apply -f k8s/deployment.yaml  # Adjust path to your Kubernetes deployment file
           kubectl rollout status deployment/frontend-deployment  # Ensure the deployment completes successfully
 
