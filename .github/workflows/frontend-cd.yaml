@@ -90,12 +90,7 @@ jobs:
             -t frontend:latest .
 
       - name: Log into Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          mask-password: true
-          aws-access-key-id: AKIAZJDG7U3FZ4ZO43UT
-          aws-secret-access-key: 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
-          aws-region: us-east-1
+        uses: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 638018627275.dkr.ecr.us-east-1.amazonaws.com
 
       - name: Push Docker image to ECR
         run: |
