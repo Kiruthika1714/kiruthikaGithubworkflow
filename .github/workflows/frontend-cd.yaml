@@ -86,8 +86,8 @@ jobs:
       - name: Build the application with Docker
         run: |
           docker build \
-            --build-arg REACT_APP_MOVIE_API_URL=https://www.google.co.in/ \
-            -t frontend:$GITHUB_SHA .
+            --build-arg REACT_APP_MOVIE_API_URL=https://myproject \
+            -t frontend:latest .
 
       - name: Log into Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
