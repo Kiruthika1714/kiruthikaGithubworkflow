@@ -86,24 +86,30 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t ${{ secrets.AWS_ECR_REPOSITORY }}:$GITHUB_SHA .
+            -t frontend-app:latest
         
-      - name: Log into Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
+      # Set up AWS credentials using GitHub Secrets
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: AKIAZJDG7U3FZ4ZO43UT
+          aws-secret-access-key: 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
+          aws-region: us-east-1
+
+    # Run the Docker login command to AWS ECR
+      - name: Docker login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 638018627275.dkr.ecr.us-east-1.amazonaws.com
 
       - name: Push Docker image to ECR
         run: |
-          docker tag ${{ secrets.AWS_ECR_REPOSITORY }}:$GITHUB_SHA \
-            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_REPOSITORY }}:$GITHUB_SHA
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_REPOSITORY }}:$GITHUB_SHA
+          docker tag backend-app:latest 638018627275.dkr.ecr.us-east-1.amazonaws.com/frontend:latest
+          docker push 638018627275.dkr.ecr.us-east-1.amazonaws.com/backend:latest
 
-      - name: Deploy to Kubernetes cluster (EKS) using kubectl
+      - name: Deploy to EKS using kubectl
         run: |
-          aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.AWS_EKS_CLUSTER_NAME }}
-          kubectl apply -f kubernetes/deployment.yaml  # Adjust path to your Kubernetes deployment file
-          kubectl rollout status deployment/backend-deployment  # Ensure the deployment completes successfully
+          aws eks --region us-east-1 update-kubeconfig --name cluster
+          kubectl apply -f k8s/deployment.yaml  # Adjust path to your Kubernetes deployment file
+          kubectl apply -f k8s/service.yaml
+          
 
