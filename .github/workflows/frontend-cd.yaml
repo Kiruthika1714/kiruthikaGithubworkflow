@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Use the required Node.js version
+          node-version: '18.14.2'  # Use the required Node.js version
 
       - name: Cache node modules
         uses: actions/cache@v2
@@ -43,7 +43,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18.14.2'
 
       - name: Cache node modules
         uses: actions/cache@v2
@@ -70,7 +70,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18.14.2'
 
       - name: Cache node modules
         uses: actions/cache@v2
@@ -85,7 +85,9 @@ jobs:
 
       - name: Build the application with Docker
         run: |
-          docker build -t frontend .
+          docker build \
+            --build-arg REACT_APP_MOVIE_API_URL=https://www.google.co.in/ \
+            -t frontend:$GITHUB_SHA .
 
       - name: Log into Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
