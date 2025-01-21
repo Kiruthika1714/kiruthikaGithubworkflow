@@ -86,7 +86,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t backend-app:latest
+            -t backend-app:latest .
         
       # Set up AWS credentials using GitHub Secrets
       - name: Set up AWS credentials
