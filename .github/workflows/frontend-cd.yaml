@@ -111,5 +111,5 @@ jobs:
         run: |
           aws eks --region us-east-1 update-kubeconfig --name cluster
           kubectl apply -f k8s/deployment.yaml  # Adjust path to your Kubernetes deployment file
-          kubectl rollout status deployment/frontend-deployment  # Ensure the deployment completes successfully
+          kubectl apply -f k8s/service.yaml
 
