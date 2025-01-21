@@ -92,6 +92,7 @@ jobs:
       - name: Log into Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
         with:
+          mask-password: true
           aws-access-key-id: AKIAZJDG7U3FZ4ZO43UT
           aws-secret-access-key: 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
           aws-region: us-east-1
