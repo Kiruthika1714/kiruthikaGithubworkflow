@@ -84,7 +84,7 @@ jobs:
         IMAGE_TAG: latest
         REPO_NAME: frontend
       run: |
-        docker build --build-arg=REACT_APP_MOVIE_API_URL=http://a9065c3e0cf40472996be675adb4f79c-1450046968.us-east-1.elb.amazonaws.com --tag 638018627275.dkr.ecr.us-east-1.amazonaws.com/frontend:latest .
+        docker build --build-arg=REACT_APP_MOVIE_API_URL=http://af51576ff96a7456b92fb329546c370e-1268767383.us-east-1.elb.amazonaws.com --tag 638018627275.dkr.ecr.us-east-1.amazonaws.com/frontend:latest .
         docker push 638018627275.dkr.ecr.us-east-1.amazonaws.com/frontend:latest
 
     - name: Configure Kubeconfig
